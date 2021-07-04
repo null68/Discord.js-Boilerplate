@@ -1,7 +1,7 @@
 module.exports = class {
   constructor(client, options) {
     this.client = client;
-    this.type = options.type;
+    this.match = options.match;
   }
   async init() {
     return null;

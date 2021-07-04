@@ -5,6 +5,7 @@ module.exports = class {
     this.name = options.name || null;
     this.description = options.description || "Nema deskripciju";
     this.category = options.category || "In development";
+    this.usage = options.usage || null;
     // Arrays
     this.args = options.args || null;
     this.permissions = options.permissions || new Array();

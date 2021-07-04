@@ -9,22 +9,34 @@ module.exports = class extends Event {
   async init(message) {
     if (!message.content.startsWith(this.client.prefix) || message.author.bot)
       return;
-
-    let ARGS = message.content.slice(this.client.prefix).trim().split("/ +/");
+    let ARGS = message.content
+      .slice(this.client.prefix.length)
+      .trim()
+      .split(/ +/);
     let COMMAND = ARGS.shift().toLowerCase();
-    let COMMAND_ARGS;
+    let COMMAND_ARGS = {};
+
     if (this.client.commands.has(COMMAND)) {
-      if (this.client.args.has(COMMAND)) {
-        for (let ARG of this.client.args.get(COMMAND)) {
-          if (this.client.args.has(ARG.name)) {
-            COMMAND_ARGS[ARG.name] = this.client.args[ARG.name];
-          } else {
-            COMMAND_ARGS[ARG.name] = null;
+      let i = 0;
+      if (this.client.commands.get(COMMAND).args) {
+        for (let ARG of this.client.commands.get(COMMAND).args) {
+          if (ARG.hasOwnProperty("type")) {
+            COMMAND_ARGS[ARG.name] = this.client.args[ARG.type].init(
+              message,
+              ARGS[i]
+            );
+          } else if (ARG.hasOwnProperty("match")) {
+            COMMAND_ARGS[ARG.name] = this.client.matches[ARG.match].init(
+              message,
+              ARGS
+            );
           }
+          i++;
         }
         this.client.commands.get(COMMAND).init(message, COMMAND_ARGS);
+      } else {
+        this.client.commands.get(COMMAND).init(message);
       }
-      this.client.commands.get(COMMAND).init(message);
     }
   }
 };

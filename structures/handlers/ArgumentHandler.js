@@ -8,11 +8,10 @@ module.exports = class extends Handler {
     });
   }
   async init() {
-    const ARGUMENTS = fs.readFileSync("arguments");
+    const ARGUMENTS = fs.readdirSync("arguments");
     for (let ARGUMENT of ARGUMENTS) {
       const FILE = new (require("../../arguments/" + ARGUMENT))(this.client);
-      if (!FILE.enabled) return;
-      this.client.args[FILE.name] = FILE.init()
+      this.client.args[FILE.type] = FILE;
     }
   }
 };

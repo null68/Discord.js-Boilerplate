@@ -2,8 +2,14 @@ const Argument = require("../structures/cores/Argument");
 module.exports = class extends Argument {
   constructor(client) {
     super(client, {
-      name: "text",
+      type: "string",
     });
   }
-  async init() {}
+  init(_, phrase) {
+    if (phrase) {
+      return phrase;
+    } else {
+      return null;
+    }
+  }
 };

@@ -5,16 +5,17 @@ module.exports = class OnyxClient extends Client {
     super({
       disableMentions: "everyone",
     });
+    // Options
     this.token = options.token;
     this.prefix = options.prefix;
     this.owner = options.owners;
-
-    this.args = [];
-
+    // Objects
+    this.args = {};
+    this.matches = {};
+    // Collections
     this.commands = new Collection();
-    this.args = new Collection();
     this.aliases = new Collection();
-
+    
     this.logger = new (require("../structures/managers/LogsManager"))(this);
   }
 
